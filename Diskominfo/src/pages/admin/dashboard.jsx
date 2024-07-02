@@ -22,7 +22,7 @@ export const Dashboard = () => {
             <div className="flex mt-5 justify-end">
               {/* You can open the modal using document.getElementById('ID').showModal() method */}
               <button
-                className="btn btn-md rounded-3xl bg-[#A91D3A] hover:bg-[#A91D3A] text-white font-medium"
+                className="btn btn-sm md:btn-md rounded-3xl bg-[#A91D3A] hover:bg-[#A91D3A] text-white font-medium"
                 onClick={() =>
                   document.getElementById("my_modal_4").showModal()
                 }
@@ -41,7 +41,7 @@ export const Dashboard = () => {
                     Form Mahasiswa Magang Baru
                   </p>
                   <form>
-                    <div className="grid grid-cols-2">
+                    <div className="md:grid grid-cols-2">
                       <div>
                         <label className="form-control w-full max-w-xs">
                           <div className="label">
@@ -67,7 +67,7 @@ export const Dashboard = () => {
                         </label>
                       </div>
                     </div>
-                    <div className="grid grid-cols-2 mt-10">
+                    <div className="md:grid grid-cols-2 md:mt-10 sm:mt-5">
                       <div>
                         <label className="form-control w-full max-w-xs">
                           <div className="label">

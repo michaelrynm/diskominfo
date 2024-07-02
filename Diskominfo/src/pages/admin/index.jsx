@@ -29,9 +29,9 @@ export const Admin = () => {
         <div className="flex justify-center mt-24">
           <img src={Image1} alt="" />
         </div>
-        <div className="grid grid-cols-2 place-items-center mt-16">
+        <div className="md:grid-cols-2 place-items-center px-16 md:px-10 mt-16">
           <div>
-            <p className="font-bold text-[#A91D3A] text-5xl">
+            <p className="font-bold text-[#A91D3A] text-4xl md:text-5xl">
               Selamat Datang <br />
               Admin Diskominfo
             </p>
