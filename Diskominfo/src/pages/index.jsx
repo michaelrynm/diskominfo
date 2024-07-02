@@ -59,7 +59,7 @@ export default function Index() {
                   Nomor Induk Mahasiswa
                 </label>
                 <input
-                  type="number"
+                  type="text"
                   placeholder="Masukan NIM Anda"
                   className="input input-bordered w-full mt-3"
                   onChange={handleInput}

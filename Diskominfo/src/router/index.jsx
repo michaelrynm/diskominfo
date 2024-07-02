@@ -1,7 +1,6 @@
 import {
     createBrowserRouter,
     RouterProvider,
-    Navigate,
   } from "react-router-dom";
   import Index from "../pages/index"
   import { Admin } from "../pages/admin";
