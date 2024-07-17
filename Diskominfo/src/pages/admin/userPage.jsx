@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Layout } from "../../components/admin/layout";
-import { Chart } from "../../components/admin/chart";
+import { UserForm } from "../../components/admin/userForm";
 import { Table } from "../../components/admin/table";
-import moment from "moment";
 import axios from "axios";
+import moment from "moment";
 
-// React Table
 import {
   createColumnHelper,
   flexRender,
@@ -16,34 +15,32 @@ import {
 const columnHelper = createColumnHelper();
 
 const columns = [
-  columnHelper.accessor("nim", {
-    header: "NIM",
-    cell: (info) => info.getValue(),
-  }),
   columnHelper.accessor("nama", {
     header: "Nama",
+    cell: (info) => info.getValue(),
+  }),
+  columnHelper.accessor("nim", {
+    header: "NIM",
     cell: (info) => info.getValue(),
   }),
   columnHelper.accessor("universitas", {
     header: "Universitas",
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor("waktuAbsensi", {
-    header: "Waktu Absensi",
+  columnHelper.accessor("periode", {
+    header: "Periode Magang",
     cell: (info) => moment(info.getValue()).format("DD MMMM YYYY HH:mm"),
   }),
 ];
 
-export const Dashboard = () => {
+export const UserPage = () => {
   const [data, setData] = useState([]);
 
   const getData = async () => {
     try {
-      const result = await axios.get(
-        "http://localhost:3000/api/v1/absensi/recent/"
-      );
-      console.log(result.data.data);
+      const result = await axios.get("http://localhost:3000/api/v1/user/");
       setData(result.data.data);
+      console.log(result.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -62,22 +59,15 @@ export const Dashboard = () => {
   return (
     <div>
       <Layout>
-        <div className="mb-5">
-          <p className="font-bold text-2xl text-[#A91D3A]">Dashboard</p>
+        <div className="mb-10">
+          <p className="font-bold text-2xl text-[#A91D3A]">
+            Data Mahasiswa Magang
+          </p>
         </div>
-        <div className="flex gap-5">
-          <Chart />
-          <Chart />
+        <div className="flex justify-end">
+          <UserForm />
         </div>
-        <div className="mt-7">
-          <div>
-            <p className="font-bold text-2xl text-[#A91D3A]">
-              Aktivitas Absen Terakhir
-            </p>
-          </div>
-        </div>
-        {/* Table */}
-        <div className="mt-10">
+        <div className="mt-5">
           <Table table={table} />
         </div>
       </Layout>

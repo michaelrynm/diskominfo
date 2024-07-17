@@ -40,7 +40,7 @@ export default function Index() {
           <div>
             <p className="font-bold text-[#A91D3A] text-4xl">Silahkan Absen!</p>
             <p className="text-2xl mt-5">
-              Pastikan nomor induk mahasiswa anda benar!
+              Pastikan Nomor Induk Mahasiswa dan Password anda benar!
             </p>
           </div>
           <div className="mt-6">
@@ -55,16 +55,31 @@ export default function Index() {
               </div>
             ) : (
               <form onSubmit={handleSubmit}>
-                <label htmlFor="" className="font-bold text-[#a91d3a]">
-                  Nomor Induk Mahasiswa
-                </label>
-                <input
-                  type="text"
-                  placeholder="Masukan NIM Anda"
-                  className="input input-bordered w-full mt-3"
-                  onChange={handleInput}
-                  value={userNim}
-                />
+                <div>
+                  <label htmlFor="" className="font-bold text-[#a91d3a]">
+                    Nomor Induk Mahasiswa
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Masukan NIM Anda!"
+                    className="input input-bordered w-full mt-3"
+                    onChange={handleInput}
+                    value={userNim}
+                  />
+                </div>
+                <div className="mt-5">
+                  <label htmlFor="" className="font-bold text-[#a91d3a]">
+                    Password
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Masukan Password Anda!"
+                    className="input input-bordered w-full mt-3"
+                    onChange={handleInput}
+                    value={userNim}
+                  />
+                </div>
+
                 <button className="btn w-full text-white bg-[#A91D3A] mt-32">
                   {" "}
                   Absen

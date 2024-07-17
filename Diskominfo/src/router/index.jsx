@@ -6,6 +6,7 @@ import {
   import { Admin } from "../pages/admin";
   import { Dashboard } from "../pages/admin/dashboard";
   import { RekapPage } from "../pages/admin/rekapPage";
+  import { UserPage } from "../pages/admin/userPage";
 
   export default function Router() {
     const router = createBrowserRouter([
@@ -20,6 +21,10 @@ import {
       {
         path: "/dashboard",
         element: <Dashboard />
+      },
+      {
+        path: "/user",
+        element: <UserPage />
       },
       {
         path: "/rekapitulasi",
