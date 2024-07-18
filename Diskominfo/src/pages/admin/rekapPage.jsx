@@ -61,7 +61,7 @@ export const RekapPage = () => {
           </p>
         </div>
         <div>
-          <Table table={table} />
+          <Table {...{ data, columns }} />
         </div>
       </Layout>
     </div>

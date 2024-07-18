@@ -27,9 +27,13 @@ const columns = [
     header: "Universitas",
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor("periode", {
-    header: "Periode Magang",
-    cell: (info) => moment(info.getValue()).format("DD MMMM YYYY HH:mm"),
+  columnHelper.accessor("periodeMulai", {
+    header: "Periode Mulai Magang",
+    cell: (info) => moment(info.getValue()).format("DD MMMM YYYY"),
+  }),
+  columnHelper.accessor("periodeSelesai", {
+    header: "Periode Selesai Magang",
+    cell: (info) => moment(info.getValue()).format("DD MMMM YYYY"),
   }),
 ];
 
@@ -40,7 +44,6 @@ export const UserPage = () => {
     try {
       const result = await axios.get("http://localhost:3000/api/v1/user/");
       setData(result.data.data);
-      console.log(result.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -68,7 +71,12 @@ export const UserPage = () => {
           <UserForm />
         </div>
         <div className="mt-5">
-          <Table table={table} />
+          <Table
+            {...{
+              data,
+              columns,
+            }}
+          />
         </div>
       </Layout>
     </div>

@@ -11,6 +11,7 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
+  getPaginationRowModel,
 } from "@tanstack/react-table";
 
 const columnHelper = createColumnHelper();
@@ -57,6 +58,7 @@ export const Dashboard = () => {
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
   });
 
   return (
@@ -78,7 +80,12 @@ export const Dashboard = () => {
         </div>
         {/* Table */}
         <div className="mt-10">
-          <Table table={table} />
+          <Table
+            {...{
+              data,
+              columns,
+            }}
+          />
         </div>
       </Layout>
     </div>

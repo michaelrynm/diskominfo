@@ -1,7 +1,7 @@
 import React from "react";
 
 export const Input = (props) => {
-  const { label, type, placeholder } = props;
+  const { label, type, placeholder, value, onChange, name } = props;
   return (
     <div>
       <label className="form-control w-full max-w-xs">
@@ -12,6 +12,9 @@ export const Input = (props) => {
           type={type}
           placeholder={placeholder}
           className="input input-bordered input-md w-full max-w-xs"
+          value={value}
+          onChange={onChange}
+          name={name}
         />
       </label>
     </div>
