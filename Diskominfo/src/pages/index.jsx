@@ -90,7 +90,7 @@ export default function Index() {
           <div>
             <p className="font-bold text-[#A91D3A] text-4xl">Silahkan Absen!</p>
             <p className="text-2xl mt-5">
-              Pastikan Nomor Induk Mahasiswa dan Password anda benar!
+              Pastikan Username dan Password anda benar!
             </p>
           </div>
           <div className="mt-6">
