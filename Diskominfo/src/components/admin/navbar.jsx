@@ -1,9 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { SlArrowDown } from "react-icons/sl";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
+import Swal from "sweetalert2";
 
 export const Navbar = () => {
+  const navigate = useNavigate();
+
+  const handleButton = (e) => {
+    e.preventDefault();
+    localStorage.removeItem("isLoggedIn");
+    Swal.fire({
+      icon: "success",
+      title: "Logout Berhasil! ",
+      showConfirmButton: false,
+      timer: 2000,
+    });
+    setTimeout(() => {
+      navigate("/admin");
+    }, 2500);
+  };
+
   return (
     <div>
       <div className="bg-[#A91D3A] p-6">
@@ -26,13 +43,14 @@ export const Navbar = () => {
               </div>
               <ul
                 tabIndex={0}
-                className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+                className="dropdown-content z-[1] menu p-2 shadow-xl bg-base-100 rounded-box w-52"
               >
-                <Link to={"/"}>
-                  <li className="hover:bg-[#A91D3A] hover:text-white rounded-xl font-bold">
-                    <a>Logout</a>
-                  </li>
-                </Link>
+                <button
+                  onClick={handleButton}
+                  className="btn btn-sm font-bold hover:bg-[#A91D3A] hover:text-white"
+                >
+                  Logout
+                </button>
               </ul>
             </div>
           </div>

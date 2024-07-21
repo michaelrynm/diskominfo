@@ -1,13 +1,14 @@
 import React from "react";
 
-export const Chart = () => {
+export const Chart = (props) => {
+  const { title, text, description } = props;
   return (
     <div>
       <div className="stats shadow">
         <div className="stat">
-          <div className="stat-title">Total Page Views</div>
-          <div className="stat-value">89,400</div>
-          <div className="stat-desc">21% more than last month</div>
+          <div className="stat-title">{title}</div>
+          <div className="stat-value">{text}</div>
+          <div className="stat-desc">{description}</div>
         </div>
       </div>
     </div>

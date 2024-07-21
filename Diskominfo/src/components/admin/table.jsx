@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   createColumnHelper,
   flexRender,
@@ -8,12 +8,14 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { FaSearch } from "react-icons/fa";
+import { DownloadTableExcel } from "react-export-table-to-excel";
 
 export const Table = ({ data, columns }) => {
+  const tableRef = useRef(null);
   const [globalFilter, setGlobalFilter] = useState("");
   const [pagination, setPagination] = useState({
     pageIndex: 0,
-    pageSize: 5,
+    pageSize: 10,
   });
 
   const table = useReactTable({
@@ -75,7 +77,10 @@ export const Table = ({ data, columns }) => {
             </button>
           </div>
         </div>
-        <table className="table table-zebra border border-slate-300">
+        <table
+          className="table table-zebra border border-slate-300"
+          ref={tableRef}
+        >
           {/* head */}
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -105,6 +110,17 @@ export const Table = ({ data, columns }) => {
             ))}
           </tbody>
         </table>
+        <div className="mt-3">
+          <DownloadTableExcel
+            filename="Table"
+            sheet="sheet1"
+            currentTableRef={tableRef.current}
+          >
+            <button className="btn btn-sm bg-[#A91D3A] hover:bg-[#A91D3A] text-white font-bold">
+              Export to Excel
+            </button>
+          </DownloadTableExcel>
+        </div>
       </div>
     </div>
   );

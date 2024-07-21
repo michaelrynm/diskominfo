@@ -2,27 +2,79 @@ import React from "react";
 import { useState } from "react";
 import Image1 from "../../assets/image4.svg";
 import Image2 from "../../assets/image3.svg";
-import Image3 from "../../assets/image5.svg";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 export const Admin = () => {
-  const [userNim, setUserNim] = useState("");
-  const [isLogin, setIsLogin] = useState(false);
-
-  const handleInput = (e) => {
-    setUserNim(e.target.value);
+  const navigate = useNavigate()
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
-  console.log(userNim);
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+  });
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const nim = "12345678";
-
-    if (userNim === nim) {
-      setIsLogin(true);
-    } else {
-      alert("Nim tidak terdaftar");
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/v1/admin/login",
+        formData
+      );
+      if (response.status === 200) {
+        localStorage.setItem("isLoggedIn", "true");
+        Swal.fire({
+          icon: "success",
+          title: "Login Berhasil! ",
+          text: "Selamat datang Admin!",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      if (error.response) {
+        if (error.response.status === 401) {
+          Swal.fire({
+            icon: "error",
+            title: "Password yang anda masukkan salah! ",
+            showConfirmButton: false,
+            timer: 3000,
+            target: document.getElementById("my_modal_3"),
+          });
+        } else if (error.response.status === 402) {
+          Swal.fire({
+            icon: "error",
+            title: "Data user tidak ditemukan! ",
+            showConfirmButton: false,
+            timer: 3000,
+          });
+        }
+      } else {
+        console.log("Network error:", error.message);
+      }
+    } finally {
+      setFormData({
+        username: "",
+        password: "",
+      });
+      setTimeout(()=> {
+        navigate("/dashboard")
+      }, 2500)
     }
   };
+
   return (
     <div>
       <div className="flex justify-center mt-24">
@@ -44,48 +96,47 @@ export const Admin = () => {
             </p>
           </div>
           <div className="mt-6">
-            {isLogin ? (
-              <div className="border border-gray-400 shadow-2xl rounded-lg p-20">
-                <div className="flex flex-col items-center">
-                  <img src={Image3} alt="" />
-                  <p className="text-2xl font-medium mt-3">
-                    Selamat Datang Audita Bella
-                  </p>
+            <form onSubmit={handleSubmit}>
+              <div>
+                <label htmlFor="" className="font-bold text-[#a91d3a]">
+                  Username
+                </label>
+                <input
+                  type="text"
+                  placeholder="Masukan Username Anda!"
+                  className="input input-bordered w-full mt-3"
+                  name="username"
+                  value={formData.username}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="mt-5">
+                <label htmlFor="" className="font-bold text-[#a91d3a]">
+                  Password
+                </label>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Masukan Password Anda!"
+                  className="input input-bordered w-full mt-3"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                />
+                <div className="flex items-center gap-3 mt-3 text-gray-400">
+                  <label htmlFor="">Show Password</label>
+                  <input
+                    type="checkbox"
+                    className="toggle toggle-xs"
+                    onClick={togglePasswordVisibility}
+                  />
                 </div>
               </div>
-            ) : (
-              <form onSubmit={handleSubmit}>
-                <div>
-                  <label htmlFor="" className="font-bold text-[#a91d3a]">
-                    Username
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Masukan Username Anda!"
-                    className="input input-bordered w-full mt-3"
-                    onChange={handleInput}
-                    value={userNim}
-                  />
-                </div>
-                <div className="mt-5">
-                  <label htmlFor="" className="font-bold text-[#a91d3a]">
-                    Password
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Masukan Password Anda!"
-                    className="input input-bordered w-full mt-3"
-                    onChange={handleInput}
-                    value={userNim}
-                  />
-                </div>
 
-                <button className="btn w-full text-white bg-[#A91D3A] mt-32">
-                  {" "}
-                  Absen
-                </button>
-              </form>
-            )}
+              <button className="btn w-full text-white bg-[#A91D3A] mt-32">
+                {" "}
+                Absen
+              </button>
+            </form>
           </div>
         </div>
       </div>

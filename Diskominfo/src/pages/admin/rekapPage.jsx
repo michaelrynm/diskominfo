@@ -9,6 +9,7 @@ import {
 import axios from "axios";
 import moment from "moment";
 import { Table } from "../../components/admin/table";
+import { useNavigate } from "react-router-dom";
 
 const columnHelper = createColumnHelper();
 const columns = [
@@ -32,6 +33,8 @@ const columns = [
 
 export const RekapPage = () => {
   const [data, setData] = useState([]);
+  const [isLoggedIn, setIsLoggedin] = useState(false);
+  const navigate = useNavigate()
 
   const getData = async () => {
     try {
@@ -45,6 +48,15 @@ export const RekapPage = () => {
   useEffect(() => {
     getData();
   }, []);
+
+  useEffect(() => {
+    const isLogin = localStorage.getItem("isLoggedIn");
+    if (isLogin) {
+      setIsLoggedin(true);
+    } else {
+      navigate("/admin");
+    }
+  });
 
   const table = useReactTable({
     data,

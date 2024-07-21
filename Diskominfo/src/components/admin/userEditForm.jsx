@@ -2,16 +2,20 @@ import React, { useState, useRef } from "react";
 import { FaClosedCaptioning, FaPlus } from "react-icons/fa6";
 import { Input } from "./input";
 import axios from "axios";
-import moment from "moment";
 import Swal from "sweetalert2";
+import moment from "moment";
 
-export const UserForm = ({ getData }) => {
+export const UserEditForm = ({ data }) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
   const [formData, setFormData] = useState({
-    nama: "",
-    universitas: "",
-    periodeMulai: "",
-    periodeSelesai: "",
-    nim: "",
+    nama: data.nama,
+    universitas: data.universitas,
+    periodeMulai: moment(data.periodeMulai).format("YYYY-MM-DD"),
+    periodeSelesai: moment(data.periodeSelesai).format("YYYY-MM-DD"),
+    nim: data.nim,
     password: "",
   });
 
@@ -28,73 +32,62 @@ export const UserForm = ({ getData }) => {
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const result = await axios.post(
-        "http://localhost:3000/api/v1/user/create",
-        formData
-      );
-      if (result.status === 200) {
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Data Peserta Magang Berhasil Ditambahkan! ",
-          showConfirmButton: false,
-          timer: 3000,
-        });
-      }
-      closeModal();
-      getData();
-    } catch (error) {
-      if (error.response) {
-        if (error.response.status === 401) {
-          Swal.fire({
-            position: "top-end",
-            icon: "error",
-            title: "Data Peserta Peserta Magang Sudah Ada! ",
-            showConfirmButton: false,
-            timer: 2000,
-            target: document.getElementById("my_modal_3"),
-          });
-        } else {
-          Swal.fire({
-            position: "top-end",
-            icon: "error",
-            title: "Something Went Wrong Please Try Again! ",
-            showConfirmButton: false,
-            timer: 2000,
-          });
+    console.log(formData);
+    Swal.fire({
+      title: "Apakah data sudah benar?",
+      showCancelButton: true,
+      confirmButtonText: "Save",
+      target: document.getElementById("my_modal_4"),
+    }).then(async (result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        try {
+          const response = await axios.put(
+            `http://localhost:3000/api/v1/user/${data._id}`,
+            formData
+          );
+          if (response.status === 200) {
+            closeModal();
+            Swal.fire("Saved!", "", "success");
+            setTimeout(() => {
+              location.reload();
+            }, 1500);
+          }
+        } catch (error) {
+          console.log(error);
         }
-      } else {
-        console.log("Network error:", error.message);
+      } else if (result.isDismissed) {
+        closeModal();
+        Swal.fire("Changes are not saved", "", "info");
       }
+    });
 
-    } finally {
-      setFormData({
-        nama: "",
-        universitas: "",
-        periodeMulai: "",
-        periodeSelesai: "",
-        nim: "",
-        password: "",
-      });
-    }
+    // try {
+    //   const response = await axios.put(
+    //     `http://localhost:3000/api/v1/user/${data._id}`,
+    //     formData
+    //   );
+    //   if (response.status === 200) {
+
+    //     closeModal();
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   return (
     <div>
       {/* You can open the modal using document.getElementById('ID').showModal() method */}
       <button
-        className="btn btn-sm rounded-lg bg-[#A91D3A] text-white hover:bg-[#A91D3A] hover:text-white"
-        onClick={() => document.getElementById("my_modal_3").showModal()}
+        className="bg-blue-500 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded"
+        onClick={() => document.getElementById("my_modal_4").showModal()}
       >
-        <span className="flex gap-3">
-          Tambah Peserta Magang
-          <FaPlus />
-        </span>
+        <span className="flex gap-3">Edit</span>
       </button>
-      <dialog id="my_modal_3" ref={modalRef} className="modal">
+      <dialog id="my_modal_4" ref={modalRef} className="modal">
         <div className="modal-box">
           <form method="dialog">
             {/* if there is a button in form, it will close the modal */}
@@ -102,7 +95,7 @@ export const UserForm = ({ getData }) => {
               ✕
             </button>
           </form>
-          <h3 className="font-bold text-lg">Data Peserta Magang!</h3>
+          <h3 className="font-bold text-lg">Edit Data Peserta Magang!</h3>
           <p className="py-4">Press ESC key or click on ✕ button to close</p>
           <div>
             <form onSubmit={handleSubmit}>
@@ -143,11 +136,21 @@ export const UserForm = ({ getData }) => {
               />
               <Input
                 label="Password"
-                type="text"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
+                placeholder="leave blank if will not be updated"
               />
+              <span className="label-text-alt flex items-center gap-3 mt-2">
+                <label htmlFor="">Show Password</label>
+                <input
+                  type="checkbox"
+                  className="toggle toggle-xs"
+                  onClick={togglePasswordVisibility}
+                />
+              </span>
+
               <div className="mt-3 flex justify-center">
                 <button className="btn btn-wide rounded-lg bg-[#A91D3A] text-white">
                   Save
